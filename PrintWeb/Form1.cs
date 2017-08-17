@@ -72,7 +72,42 @@ namespace PrintWeb
             string file = Path.Combine(Application.StartupPath, "Sample.pdf");
             for (int i = 0; i < (int)numericUpDownCopy.Value; i++)
             {
-                print.PrintSettingAllOptions(DdlPrinter.Text, file);
+                print.PrintSettingAllOptions( file , DdlPrinter.Text, PaperSize.Text );
+            }
+        }
+
+        private void DdlPrinter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var print = new PrintPDf();
+            var sizes = print.GetPaper(DdlPrinter.Text);
+            PaperSize.Items.AddRange(sizes.ToArray());
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var open = new OpenFileDialog();
+            open.Filter = "html file |*.html";
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                string htmlFile = open.FileName;
+                PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize), DdlPageSize.Text, true);
+                PdfPageOrientation pdfOrientation = (PdfPageOrientation)Enum.Parse(typeof(PdfPageOrientation), DdlPageOrientation.Text, true);
+
+                var createPdf = new CreatePdf(pageSize, pdfOrientation);
+                string saveTo = Path.Combine(Application.StartupPath, "Sample.pdf");
+                int webPageWidth = (int)TxtWidth.Value;
+                int webPageHeight = (int)TxtHeight.Value;
+                int margineTop = (int)numericUpDownTop.Value;
+                int margineLeft = (int)numericUpDownLeft.Value;
+                int margineRight = (int)numericUpDownRight.Value;
+                int margineBottom = (int)numericUpDownBottom.Value;
+                createPdf.SaveHtmlToPdf(htmlFile, saveTo, webPageWidth, webPageHeight, margineTop, margineLeft, margineRight, margineBottom);
+                var print = new PrintPDf();
+                string file = Path.Combine(Application.StartupPath, "Sample.pdf");
+                for (int i = 0; i < (int)numericUpDownCopy.Value; i++)
+                {
+                    print.PrintSettingAllOptions(file, DdlPrinter.Text, PaperSize.Text);
+                }
             }
         }
     }

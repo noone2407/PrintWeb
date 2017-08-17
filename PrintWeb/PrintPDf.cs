@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using Foxit.PDF.Printing;
 
 namespace PrintWeb
@@ -31,10 +32,36 @@ namespace PrintWeb
             bool valid = PrintJob.AddLicense(licenseKey);
 
         }
-        public void PrintSettingAllOptions(string printer, string file)
+
+        public List<string> GetPaper(string printer)
+        {
+            var result = new List<string>();
+            PrintJob printJob = new PrintJob(printer);
+            foreach (var size in printJob.Printer.PaperSizes)
+            {
+                if (size != null)
+                    result.Add(size.Name);
+            }
+            return result;
+        }
+        public void PrintSettingAllOptions(string file, string printer, string papersize)
         {
             PrintJob printJob = new PrintJob(printer, file);
-            printJob.PrintOptions.Color = true;
+            printJob.DocumentName = "A4";
+            if (printJob.Printer.Color)
+                printJob.PrintOptions.Color = true;
+            if (printJob.Printer.Collate)
+                printJob.PrintOptions.Collate = true;
+            if (printJob.Printer.Duplex)
+                printJob.PrintOptions.DuplexMode = DuplexMode.DuplexHorizontal;
+            printJob.PrintOptions.Copies = 1;
+            printJob.PrintOptions.HorizontalAlign = HorizontalAlign.Left;
+            printJob.PrintOptions.Orientation.Type = OrientationType.Portrait;
+            var paper = printJob.Printer.PaperSizes[papersize];
+            printJob.PrintOptions.PaperSize = paper;
+            printJob.PrintOptions.PrintAnnotations = false;
+            printJob.PrintOptions.Resolution = printJob.Printer.Resolutions[0];
+            printJob.PrintOptions.VerticalAlign = VerticalAlign.Top;
             printJob.PrintOptions.Scaling = new AutoPageScaling();
             printJob.Print();
         }

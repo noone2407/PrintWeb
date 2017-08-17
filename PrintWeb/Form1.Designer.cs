@@ -60,6 +60,9 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.numericUpDownCopy = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
+            this.PaperSize = new System.Windows.Forms.ComboBox();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.TxtWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.TxtHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBottom)).BeginInit();
@@ -101,10 +104,11 @@
             // 
             this.DdlPrinter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DdlPrinter.FormattingEnabled = true;
-            this.DdlPrinter.Location = new System.Drawing.Point(91, 308);
+            this.DdlPrinter.Location = new System.Drawing.Point(91, 281);
             this.DdlPrinter.Name = "DdlPrinter";
             this.DdlPrinter.Size = new System.Drawing.Size(290, 21);
             this.DdlPrinter.TabIndex = 3;
+            this.DdlPrinter.SelectedIndexChanged += new System.EventHandler(this.DdlPrinter_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -118,7 +122,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 316);
+            this.label2.Location = new System.Drawing.Point(31, 289);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(37, 13);
             this.label2.TabIndex = 6;
@@ -143,8 +147,11 @@
             "A3",
             "A4",
             "A5",
-            "Letter",
-            "HalfLetter"});
+            "A6",
+            "A7",
+            "A8",
+            "A9",
+            "A10"});
             this.DdlPageSize.Location = new System.Drawing.Point(91, 12);
             this.DdlPageSize.Name = "DdlPageSize";
             this.DdlPageSize.Size = new System.Drawing.Size(112, 21);
@@ -251,7 +258,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(140, 23);
             this.button6.TabIndex = 20;
-            this.button6.Text = "Print PDF  (Foxit)";
+            this.button6.Text = "Print";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
@@ -416,11 +423,42 @@
             0,
             0});
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(31, 320);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(59, 13);
+            this.label19.TabIndex = 37;
+            this.label19.Text = "Paper size:";
+            // 
+            // PaperSize
+            // 
+            this.PaperSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.PaperSize.FormattingEnabled = true;
+            this.PaperSize.Location = new System.Drawing.Point(91, 312);
+            this.PaperSize.Name = "PaperSize";
+            this.PaperSize.Size = new System.Drawing.Size(290, 21);
+            this.PaperSize.TabIndex = 36;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(375, 374);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(140, 23);
+            this.button3.TabIndex = 38;
+            this.button3.Text = "Save and Print";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(662, 465);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.PaperSize);
             this.Controls.Add(this.numericUpDownCopy);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.label14);
@@ -502,6 +540,9 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.NumericUpDown numericUpDownCopy;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox PaperSize;
+        private System.Windows.Forms.Button button3;
     }
 }
 

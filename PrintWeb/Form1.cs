@@ -30,102 +30,50 @@ namespace PrintWeb
         {
             PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize), DdlPageSize.Text, true);
             PdfPageOrientation pdfOrientation = (PdfPageOrientation)Enum.Parse(typeof(PdfPageOrientation), DdlPageOrientation.Text, true);
-            var createPdf = new CreatePdf(pageSize, pdfOrientation);
 
-            string file = Path.Combine(Application.StartupPath, "Sample.pdf");
+            var createPdf = new CreatePdf(pageSize, pdfOrientation);
+            string saveTo = Path.Combine(Application.StartupPath, "Sample.pdf");
             string url = TxtUrl.Text;
-            createPdf.SaveUrlToPdf(url, file);
+            int webPageWidth = (int)TxtWidth.Value;
+            int webPageHeight = (int)TxtHeight.Value;
+            int margineTop = (int)numericUpDownTop.Value;
+            int margineLeft = (int)numericUpDownLeft.Value;
+            int margineRight = (int)numericUpDownRight.Value;
+            int margineBottom = (int)numericUpDownBottom.Value;
+            createPdf.SaveUrlToPdf(url, saveTo, webPageWidth, webPageHeight, margineTop, margineLeft, margineRight, margineBottom);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize), DdlPageSize.Text, true);
-            PdfPageOrientation pdfOrientation = (PdfPageOrientation)Enum.Parse(typeof(PdfPageOrientation), DdlPageOrientation.Text, true);
-            var createPdf = new CreatePdf(pageSize, pdfOrientation);
-
-            string file = Path.Combine(Application.StartupPath, "Sample.pdf");
-            string html = TxtUrl.Text;
-            createPdf.SaveHtmlToPdf(file);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            string file = Path.Combine(Application.StartupPath, "Sample.pdf");
-            OpenPdfAcrobat(file);
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            string file = Path.Combine(Application.StartupPath, "Sample.pdf");
-            for (int i = 0; i < (int)numericUpDownCopy.Value; i++)
+            var open = new OpenFileDialog();
+            open.Filter = "html file |*.html";
+            if (open.ShowDialog() == DialogResult.OK)
             {
-                PrinteAcrobat(file, DdlPrinter.Text);
+                string htmlFile = open.FileName;
+                PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize), DdlPageSize.Text, true);
+                PdfPageOrientation pdfOrientation = (PdfPageOrientation)Enum.Parse(typeof(PdfPageOrientation), DdlPageOrientation.Text, true);
+
+                var createPdf = new CreatePdf(pageSize, pdfOrientation);
+                string saveTo = Path.Combine(Application.StartupPath, "Sample.pdf");
+                int webPageWidth = (int)TxtWidth.Value;
+                int webPageHeight = (int)TxtHeight.Value;
+                int margineTop = (int)numericUpDownTop.Value;
+                int margineLeft = (int)numericUpDownLeft.Value;
+                int margineRight = (int)numericUpDownRight.Value;
+                int margineBottom = (int)numericUpDownBottom.Value;
+                createPdf.SaveHtmlToPdf(htmlFile, saveTo, webPageWidth, webPageHeight, margineTop, margineLeft, margineRight, margineBottom);
             }
-        }
-        private void button5_Click(object sender, EventArgs e)
-        {
-            string file = Path.Combine(Application.StartupPath, "Sample.pdf");
-            OpenPdfFoxit(file);
+
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            var print = new PrintPDf();
             string file = Path.Combine(Application.StartupPath, "Sample.pdf");
             for (int i = 0; i < (int)numericUpDownCopy.Value; i++)
             {
-                PrinteFoxit(file, DdlPrinter.Text);
+                print.PrintSettingAllOptions(DdlPrinter.Text, file);
             }
         }
-
-        private void OpenPdfAcrobat(string fileName)
-        {
-            var gsProcessInfo = new ProcessStartInfo();
-            gsProcessInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            gsProcessInfo.FileName = @"C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe";
-            gsProcessInfo.Arguments = fileName;
-            var proc = new Process();
-            proc.StartInfo = gsProcessInfo;
-            proc.Start();
-            proc.WaitForExit();
-        }
-        private void OpenPdfFoxit(string fileName)
-        {
-            var gsProcessInfo = new ProcessStartInfo();
-            gsProcessInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            gsProcessInfo.FileName = @"C:\Program Files (x86)\Foxit Software\Foxit Reader\Foxit Reader.exe";
-            gsProcessInfo.Arguments = fileName;
-            var proc = new Process();
-            proc.StartInfo = gsProcessInfo;
-            proc.Start();
-            proc.WaitForExit();
-        }
-        private void PrinteAcrobat(string fileName, string printerName)
-        {
-            var gsProcessInfo = new ProcessStartInfo();
-            gsProcessInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            gsProcessInfo.FileName = @"C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe";
-            gsProcessInfo.Arguments = string.Format("/n /s /h /t {0} \"{1}\"", fileName, printerName);
-            gsProcessInfo.CreateNoWindow = true;
-            gsProcessInfo.UseShellExecute = false;
-            var proc = new Process();
-            proc.StartInfo = gsProcessInfo;
-            proc.Start();
-            proc.WaitForExit();
-        }
-        private void PrinteFoxit(string fileName, string printerName)
-        {
-            var gsProcessInfo = new ProcessStartInfo();
-            gsProcessInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            gsProcessInfo.FileName = @"C:\Program Files (x86)\Foxit Software\Foxit Reader\Foxit Reader.exe";
-            gsProcessInfo.Arguments = string.Format("/t \"{0}\" \"{1}\"", fileName, printerName);
-            gsProcessInfo.CreateNoWindow = true;
-            gsProcessInfo.UseShellExecute = false;
-            var proc = new Process();
-            proc.StartInfo = gsProcessInfo;
-            proc.Start();
-            proc.WaitForExit();
-        }
-
-
     }
 }
